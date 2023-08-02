@@ -17,7 +17,7 @@ git clone https://github.com/fdeng18/dreamer-pro.git
 cd dreamer-pro
 conda create --name dreamer-pro python=3.8 conda-forge::cudatoolkit conda-forge::cudnn
 conda activate dreamer-pro
-pip install --upgrade pip
+pip install --upgrade pip setuptools==57.5.0 
 pip install -r requirements.txt
 ```
 DreamerPro has not been tested on Atari, but if you would like to try, the Atari ROMs can be imported by following these [instructions](https://github.com/openai/atari-py#roms).
