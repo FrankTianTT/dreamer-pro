@@ -27,6 +27,8 @@ import tensorflow as tf
 import agent
 import elements
 import common
+from common.dmc2gym import make_dmc_env
+
 
 
 configs = pathlib.Path(sys.argv[0]).parent / 'configs.yaml'
@@ -87,6 +89,24 @@ def make_env(mode):
         task, config.action_repeat, config.image_size, config.grayscale,
         life_done=False, sticky_actions=True, all_actions=True)
     env = common.OneHotAction(env)
+  elif suite == 'test':
+    domain_name, variant = task.split('_', 1)
+    if domain_name == "cheetah":
+        task_name = "run"
+    elif domain_name == "walker":
+        task_name = "walk"
+    elif domain_name == "reacher":
+        task_name = "easy"
+    else:
+        raise NotImplementedError
+    
+    env = make_dmc_env(
+        domain_name=domain_name,
+        task_name=task_name,
+        variant=variant,
+        max_episode_length=1000,
+        action_repeat=2,
+    )
   else:
     raise NotImplementedError(suite)
   env = common.TimeLimit(env, config.time_limit)

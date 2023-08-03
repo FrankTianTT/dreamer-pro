@@ -105,7 +105,6 @@ atari:
 
 dmc:
 
-  task: dmc_walker_walk
   time_limit: 1000
   action_repeat: 2
   eval_every: 1e4
@@ -144,3 +143,84 @@ debug:
   train_steps: 1
   dataset.batch: 10
   dataset.length: 10
+
+
+noisy:
+
+  # Train Script
+  logdir: /dev/null
+  seed: 0
+  task: test_cheetah_video_background_noisy_sensor
+  num_envs: 1
+  steps: 1e6
+  eval_every: 1e5
+  eval_eps: 10
+  action_repeat: 2
+  time_limit: 1000
+  prefill: 10000
+  image_size: [64, 64]
+  grayscale: False
+  replay_size: 1e6
+  dataset: {batch: 50, length: 51, oversample_ends: True}
+  precision: 16
+  jit: True
+
+  # Natural Background
+  bg_path_train: '../kinetics400/videos/train'
+  bg_path_test: '../kinetics400/videos/test'
+  random_bg: False
+  max_videos: 100
+
+  # Agent
+  log_every: 1e4
+  train_every: 1000
+  train_steps: 100
+  pretrain: 0
+  clip_rewards: identity
+  expl_noise: 0.0
+  expl_behavior: greedy
+  expl_until: 0
+  eval_noise: 0.0
+  eval_state_mean: False
+
+  # World Model
+  pred_discount: True
+  grad_heads: [image, reward, discount]
+  rssm: {hidden: 400, deter: 400, stoch: 32, discrete: 32, act: elu, std_act: sigmoid2, min_std: 0.1, warm_up: 1, num_prototypes: 2500, proto: 32, temperature: 0.1, sinkhorn_eps: 0.05, sinkhorn_iters: 3}
+  encoder: {depth: 48, act: elu, kernels: [4, 4, 4, 4], keys: [image]}
+  reward_head: {layers: 4, units: 400, act: elu, dist: mse}
+  discount_head: {layers: 4, units: 400, act: elu, dist: binary}
+  loss_scales: {swav: 1.0, temp: 1.0, norm: 1.0, kl: 1.0, reward: 1.0, discount: 1.0}
+  kl: {free: 0.0, forward: False, balance: 0.8, free_avg: True}
+  model_opt: {opt: adam, lr: 3e-4, eps: 1e-5, clip: 100, wd: 1e-6}
+  aug: {max_delta: 3.0, same_across_time: True, bilinear: True}
+  freeze_prototypes_iters: 10000
+  ema_update_every: 1
+  ema_update_fraction: 0.05
+
+  # Actor Critic
+  actor: {layers: 4, units: 400, act: elu, dist: tanh_normal, min_std: 0.1}
+  critic: {layers: 4, units: 400, act: elu, dist: mse}
+  actor_opt: {opt: adam, lr: 1e-4, eps: 1e-5, clip: 100, wd: 1e-6}
+  critic_opt: {opt: adam, lr: 1e-4, eps: 1e-5, clip: 100, wd: 1e-6}
+  discount: 0.99
+  discount_lambda: 0.95
+  imag_horizon: 15
+  actor_grad: both
+  actor_grad_mix: 0.1
+  actor_ent: 1e-4
+  slow_target: True
+  slow_target_update: 100
+  slow_target_fraction: 1
+
+  # Exploration
+  expl_extr_scale: 0.0
+  expl_intr_scale: 1.0
+  expl_opt: {opt: adam, lr: 3e-4, eps: 1e-5, clip: 100, wd: 1e-6}
+  expl_head: {layers: 4, units: 400, act: elu, dist: mse}
+  disag_target: stoch
+  disag_log: True
+  disag_models: 10
+  disag_offset: 1
+  disag_action_cond: True
+  expl_model_loss: kl
