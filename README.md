@@ -13,7 +13,7 @@ DreamerPro makes large performance gains on the [DeepMind Control suite](https:/
 ### Dependencies
 First clone the repository, and then set up a conda environment with all required dependencies using the `requirements.txt` file:
 ```shell
-git clone https://github.com/fdeng18/dreamer-pro.git
+git clone https://github.com/FrankTianTT/dreamer-pro.git
 cd dreamer-pro
 conda create --name dreamer-pro python=3.8 conda-forge::cudatoolkit conda-forge::cudnn
 conda activate dreamer-pro
