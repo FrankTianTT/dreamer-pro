@@ -15,7 +15,7 @@ First clone the repository, and then set up a conda environment with all require
 ```shell
 git clone https://github.com/FrankTianTT/dreamer-pro.git
 cd dreamer-pro
-conda create --name dreamer-pro python=3.8 conda-forge::cudatoolkit conda-forge::cudnn
+conda create --name dreamer-pro python=3.8 cudatoolkit=11.0 cudnn=8.1 conda-forge::cudatoolkit conda-forge::cudnn
 conda activate dreamer-pro
 pip install --upgrade pip setuptools==57.5.0
 pip install torch --index-url https://download.pytorch.org/whl/cu110
