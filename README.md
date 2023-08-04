@@ -32,6 +32,21 @@ This will download the background videos into `kinetics400/videos`.
 
 ## Training
 
+**For baseline**
+```
+# 
+MUJOCO_GL=egl python dreamerv2/train.py --logdir log/cheetah_noisy --task test_cheetah_video_background_noisy_sensor --configs defaults noisy
+MUJOCO_GL=egl python dreamerv2/train.py --logdir log/walker_noisy --task test_walker_video_background_noisy_sensor --configs defaults noisy
+MUJOCO_GL=egl python dreamerv2/train.py --logdir log/reacher_noisy --task test_reacher_video_background_noisy_sensor --configs defaults noisy
+CUDA_VISIBLE_DEVICES=1 MUJOCO_GL=egl python dreamerv2/train.py --logdir log/cheetah_jitter --task test_cheetah_video_background_camera_jitter --configs defaults noisy
+
+MUJOCO_GL=egl python dreamerv2/train.py --logdir log/walker_jitter --task test_walker_video_background_camera_jitter --configs defaults noisy
+CUDA_VISIBLE_DEVICES=1 MUJOCO_GL=egl python dreamerv2/train.py --logdir log/reacher_jitter --task test_reacher_video_background_camera_jitter --configs defaults noisy
+
+
+CUDA_VISIBLE_DEVICES=1
+```
+
 ### DreamerPro
 For standard DMC, run:
 ```shell
